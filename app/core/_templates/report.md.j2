@@ -1,0 +1,44 @@
+# {{ report_title }}
+
+**Generated:** {{ export_date }}  
+**Entries:** {{ entries|length }}
+
+---
+
+{% for entry in entries %}
+## {{ loop.index }}. {{ entry.title }}
+
+**📅 Captured:** {{ entry.timestamp }}
+
+{% if entry.details %}
+**📋 Details:**  
+{{ entry.details }}
+{% endif %}
+
+{% if entry.location_url %}
+**📍 Location:** {{ entry.location_type|upper }} - {{ entry.location_url }}
+{% elif entry.location_type and entry.location_type != 'other' %}
+**📍 Location:** {{ entry.location_type|upper }}
+{% endif %}
+
+{% if entry.layout == "image-top" %}
+### Screenshot
+![{{ entry.title }}]({{ entry.image.path }})
+
+{% if entry.notes %}
+### Notes
+{{ entry.notes }}
+{% endif %}
+
+{% else %}
+| Screenshot | Details |
+|------------|---------|
+| ![{{ entry.title }}]({{ entry.image.path }}) | {% if entry.notes %}{{ entry.notes }}{% else %}*No notes*{% endif %} |
+
+{% endif %}
+
+---
+
+{% endfor %}
+
+**End of Report**

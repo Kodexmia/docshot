@@ -1,0 +1,20 @@
+{
+  "id": "0b7f7400",
+  "title": "Untitled",
+  "timestamp": "2025-11-24T03:11:02.348707+00:00",
+  "tags": [],
+  "layout": "image-left",
+  "image": {
+    "path": "images\\entry_20251124_031102.jpg",
+    "width": 1370,
+    "height": 677,
+    "quality": 95,
+    "hires": true
+  },
+  "notes": "",
+  "details": "",
+  "location_type": "web",
+  "location_url": "",
+  "order": 6,
+  "context": {}
+}

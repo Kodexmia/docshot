@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ report_title }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 40px 30px;
+            border-bottom: 4px solid #5a67d8;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header .meta {
+            display: flex;
+            gap: 30px;
+            font-size: 0.95rem;
+            opacity: 0.95;
+            flex-wrap: wrap;
+        }
+        
+        .header .meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .entry {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+        
+        .entry-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .entry-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .entry-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 10px 0;
+        }
+        
+        .entry-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .entry-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .entry-body {
+            margin-top: 20px;
+        }
+        
+        .field {
+            margin-bottom: 20px;
+        }
+        
+        .field-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .field-content {
+            color: #1f2937;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .field-content.details {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            font-style: italic;
+        }
+        
+        .field-content a {
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        
+        .field-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .location-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .location-badge.web {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .location-badge.app {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+        
+        .location-badge.mobile {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .location-badge.other {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .screenshot {
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+            background: white;
+        }
+        
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: zoom-in;
+            transition: opacity 0.2s;
+        }
+        
+        .screenshot img:hover {
+            opacity: 0.9;
+        }
+        
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            cursor: zoom-out;
+            animation: fadeIn 0.2s;
+        }
+        
+        .lightbox.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox img {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+            cursor: zoom-out;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .lightbox-close:hover {
+            background: rgba(255, 0, 0, 0.8);
+        }
+        
+        .lightbox-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            max-width: 80%;
+            text-align: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .layout-image-left {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .layout-image-left .screenshot {
+            grid-column: 1;
+        }
+        
+        .layout-image-left .fields {
+            grid-column: 2;
+        }
+        
+        .footer {
+            background: #f9fafb;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header .meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .entry {
+                padding: 20px;
+            }
+            
+            .entry-title {
+                font-size: 1.4rem;
+            }
+            
+            .layout-image-left {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .entry {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ report_title }}</h1>
+            <div class="meta">
+                <span>📅 Generated: {{ export_date }}</span>
+                <span>📸 Entries: {{ entries|length }}</span>
+                <span>🏷️ Session: {{ session_name }}</span>
+            </div>
+        </div>
+        
+        <div class="content">
+            {% for entry in entries %}
+            <div class="entry {% if entry.layout == 'image-left' %}layout-image-left{% endif %}">
+                <div class="entry-header">
+                    <span class="entry-number">Entry #{{ loop.index }}</span>
+                    <h2 class="entry-title">{{ entry.title }}</h2>
+                    <div class="entry-meta">
+                        <span>📅 {{ entry.timestamp[:19] }}</span>
+                        {% if entry.location_type %}
+                        <span class="location-badge {{ entry.location_type }}">
+                            {% if entry.location_type == 'web' %}🌐 Web{% endif %}
+                            {% if entry.location_type == 'app' %}💻 App{% endif %}
+                            {% if entry.location_type == 'mobile' %}📱 Mobile{% endif %}
+                            {% if entry.location_type == 'other' %}📄 Other{% endif %}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="entry-body">
+                    {% if entry.layout == 'image-left' %}
+                    <div class="screenshot">
+                        {% if entry.image_base64 %}
+                        <img src="data:image/jpeg;base64,{{ entry.image_base64 }}" alt="{{ entry.title }}">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="fields">
+                    {% endif %}
+                    
+                    {% if entry.details %}
+                    <div class="field">
+                        <div class="field-label">📋 Details</div>
+                        <div class="field-content details">{{ entry.details }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if entry.location_url %}
+                    <div class="field">
+                        <div class="field-label">📍 Location</div>
+                        <div class="field-content">
+                            {% if entry.location_url.startswith('http') %}
+                            <a href="{{ entry.location_url }}" target="_blank">{{ entry.location_url }}</a>
+                            {% else %}
+                            {{ entry.location_url }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if entry.notes %}
+                    <div class="field">
+                        <div class="field-label">📝 Notes</div>
+                        <div class="field-content">{{ entry.notes|replace('\n', '<br>')|safe }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if entry.layout == 'image-left' %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if entry.layout == 'image-top' %}
+                    <div class="screenshot">
+                        {% if entry.image_base64 %}
+                        <img src="data:image/jpeg;base64,{{ entry.image_base64 }}" alt="{{ entry.title }}">
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="footer">
+            <p><strong>Overlay Annotator v3.5</strong> — Professional Screenshot Documentation Tool</p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                Generated with {{ entries|length }} annotated screenshot{{ 's' if entries|length != 1 else '' }}
+            </p>
+        </div>
+    </div>
+    
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+    
+    <script>
+        // Lightbox functionality
+        function openLightbox(img) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            
+            lightboxImg.src = img.src;
+            lightboxCaption.textContent = img.alt;
+            lightbox.classList.add('active');
+            
+            // Prevent body scroll when lightbox is open
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Add click handlers to all images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.screenshot img');
+            images.forEach(function(img) {
+                img.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openLightbox(this);
+                });
+            });
+            
+            // Close lightbox on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

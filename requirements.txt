@@ -1,0 +1,7 @@
+pyqt6
+mss
+pillow
+pydantic
+jinja2
+markdown
+pyqthotkey

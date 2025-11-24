@@ -1,0 +1,11 @@
+# Overlay Annotator Session
+
+{% for e in entries %}
+## {{ e.title }}
+Captured: {{ e.timestamp }}
+
+| Screenshot | Notes |
+|---|---|
+| ![{{ e.title }}]({{ e.image.path }}) | {{ e.notes }} |
+
+{% endfor %}

@@ -1,0 +1,20 @@
+{
+  "id": "486d76c5",
+  "title": "Untitled",
+  "timestamp": "2025-11-24T03:16:13.688624+00:00",
+  "tags": [],
+  "layout": "image-left",
+  "image": {
+    "path": "images\\entry_20251124_031613.jpg",
+    "width": 987,
+    "height": 660,
+    "quality": 95,
+    "hires": true
+  },
+  "notes": "",
+  "details": "",
+  "location_type": "web",
+  "location_url": "",
+  "order": 10,
+  "context": {}
+}
