@@ -4,7 +4,7 @@
 
 Professional screenshot annotation tool for documentation, bug reports, and visual communication. Built for developers, QA engineers, and technical writers.
 
-![Version](https://img.shields.io/badge/version-3.5.3-blue.svg)
+![Version](https://img.shields.io/badge/version-3.6.4-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)
